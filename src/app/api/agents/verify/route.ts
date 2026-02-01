@@ -25,8 +25,8 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Create session
-        const session = await createSession(agent_name, result.token!);
+        // Create session (JWT-based, no server storage needed)
+        const { session, token } = await createSession(agent_name);
 
         return NextResponse.json({
             success: true,
