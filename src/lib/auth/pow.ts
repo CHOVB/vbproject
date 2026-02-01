@@ -3,7 +3,7 @@
 
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
-import { PoWChallenge } from './types';
+import { PoWChallenge } from '../types';
 
 const CHALLENGES_STORE: Map<string, PoWChallenge> = new Map();
 
@@ -86,7 +86,8 @@ function generateSessionToken(): string {
  */
 function cleanupExpiredChallenges(): void {
     const now = Date.now();
-    for (const [id, challenge] of CHALLENGES_STORE.entries()) {
+    const entries = Array.from(CHALLENGES_STORE.entries());
+    for (const [id, challenge] of entries) {
         if (now > challenge.expiresAt) {
             CHALLENGES_STORE.delete(id);
         }
