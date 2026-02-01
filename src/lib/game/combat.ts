@@ -206,7 +206,7 @@ export async function executeAttack(
 
     // Calculate damage
     const attackerAttack = 'stats' in attacker ? attacker.stats.str * 2 + 10 : attacker.attack;
-    const targetDefense = 'stats' in target ? Math.floor(attacker.stats.str / 2) : target.defense;
+    const targetDefense = 'stats' in target ? Math.floor(target.stats.str / 2) : target.defense;
 
     // Add some randomness (+/- 20%)
     const baseDamage = Math.max(1, attackerAttack - targetDefense);
@@ -245,13 +245,13 @@ export async function executeAttack(
     // Check for combat end
     const { ended, result } = await checkCombatEnd(session, monsters);
 
-    if (ended) {
+    if (ended && (result === 'victory' || result === 'defeat')) {
         session.status = result;
 
         // Process combat end
         if (result === 'victory') {
             await processCombatVictory(session, monsters);
-        } else if (result === 'defeat') {
+        } else {
             await processCombatDefeat(session);
         }
     }
